@@ -1,3 +1,4 @@
+import hbase.HBaseConnectionFactory
 import org.apache.hadoop.hbase.client.{ColumnFamilyDescriptorBuilder, Connection, TableDescriptorBuilder}
 import org.apache.hadoop.hbase.{NamespaceDescriptor, TableName}
 import org.apache.spark.sql.SparkSession
@@ -46,5 +47,10 @@ object Main {
       .jdbc(jdbcUrl, "employees", jdbcProperties)
 
     employeesDF.show()
+  }
+
+  def main(args: Array[String]): Unit = {
+    //createReplaceTable(connection, inpNamespace, inpTableName)
+    createDataFrameAndPutToHDFS()
   }
 }
