@@ -10,7 +10,7 @@ object Main {
 
   private def createReplaceTable(connection: Connection, inpTableName: String): Unit = {
     val admin = connection.getAdmin
-    val tableName = TableName.valueOf("employees")
+    val tableName = TableName.valueOf(inpTableName)
 
     if (admin.tableExists(tableName)) {
       println(s"Table $tableName exists. Deleting...")
@@ -37,7 +37,7 @@ object Main {
     admin.close()
   }
 
-  private def createDataFrameAndPutToHDFS(): Unit = {
+  private def createDataFrameAndPutToHBase(): Unit = {
     val jdbcUrl = "jdbc:mysql://localhost:3306/employees"
     val jdbcProperties = new java.util.Properties()
     jdbcProperties.setProperty("user", "root")
@@ -50,7 +50,9 @@ object Main {
   }
 
   def main(args: Array[String]): Unit = {
-    //createReplaceTable(connection, inpNamespace, inpTableName)
-    createDataFrameAndPutToHDFS()
+    val hbaseConnection = HBaseConnectionFactory.createConnection()
+    val tableName = "employees"
+    createReplaceTable(hbaseConnection, tableName)
+    createDataFrameAndPutToHBase()
   }
 }
